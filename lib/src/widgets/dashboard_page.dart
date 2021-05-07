@@ -33,7 +33,7 @@ class _DashboardPageState extends State<DashboardPage>
       ],
       currentIndex: _bottomNavigationProvider.currentIndex,
       onTap: (index) {
-        _bottomNavigationProvider.updatePage(index);
+        onTabNav(index);
       },
     );
   }
@@ -72,7 +72,9 @@ class _DashboardPageState extends State<DashboardPage>
                 RecentPage(),
                 MyPage(),
               ],
-              onPageChanged: (index) {},
+              onPageChanged: (index) {
+                _bottomNavigationProvider.updatePage(index);
+              },
             ),
             bottomNavigationBar: _bottomNavigationBarWidget(),
           ),
