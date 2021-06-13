@@ -7,7 +7,6 @@ import 'package:ignite/src/widgets/sign_up_page.dart';
 import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
-  static const String id = "/signInPage";
   SignInPage({Key key}) : super(key: key);
 
   @override
@@ -85,8 +84,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _authenticationProvider =
-        Provider.of<AuthenticationProvider>(context, listen: false);
+    _authenticationProvider = Provider.of<AuthenticationProvider>(context);
   }
 
   @override

@@ -7,7 +7,7 @@ class AuthenticationProvider with ChangeNotifier {
   final FirebaseAuth _auth;
   AuthenticationProvider(this._auth);
 
-  User get userState => _auth.currentUser;
+  User get currentUser => _auth.currentUser;
 
   // 이메일/비밀번호로 Firebase에 회원가입
   Future<String> signUp(

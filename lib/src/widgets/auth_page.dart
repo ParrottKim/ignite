@@ -6,37 +6,45 @@ import 'package:ignite/src/widgets/sign_in_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatefulWidget {
   AuthPage({Key key}) : super(key: key);
+
+  @override
+  _AuthPageState createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> {
   AuthenticationProvider _authenticationProvider;
+  bool _firstSeen = false;
 
-  Future<bool> checkFirstSeen() async {
+  _checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool("first_launch") ?? false);
+    setState(() {
+      _firstSeen = prefs.getBool("first_launch") ?? false;
+    });
+    await prefs.setBool("first_launch", true);
+  }
 
-    if (_seen)
-      return true;
-    else
-      await prefs.setBool("first_launch", true);
-    return false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _authenticationProvider =
+        Provider.of<AuthenticationProvider>(context, listen: false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFirstSeen();
   }
 
   @override
   Widget build(BuildContext context) {
-    _authenticationProvider = Provider.of<AuthenticationProvider>(context);
-    return FutureBuilder(
-      future: checkFirstSeen(),
-      builder: (context, snapshot) {
-        print(_authenticationProvider.userState);
-        if (!snapshot.hasData)
-          return Center(child: CircularProgressIndicator());
-        else if (snapshot.data) {
-          if (_authenticationProvider.userState != null) {
-            return DashboardPage();
-          }
-          return SignInPage();
-        } else
-          return IntroPage();
+    return Consumer<AuthenticationProvider>(
+      builder: (context, value, widget) {
+        if (!_firstSeen && value.currentUser == null) return IntroPage();
+        if (value.currentUser == null) return SignInPage();
+        return DashboardPage();
       },
     );
   }

@@ -5,7 +5,6 @@ import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 
 class IntroPage extends StatefulWidget {
-  static const String id = "/introPage";
   IntroPage({Key key}) : super(key: key);
 
   @override
@@ -54,8 +53,8 @@ class _IntroPageState extends State<IntroPage> {
 
   void onDonePress() {
     // Back to the first tab
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (_) => SignInPage()));
+    Navigator.pushAndRemoveUntil(
+        context, MaterialPageRoute(builder: (_) => SignInPage()), (_) => false);
   }
 
   void onTabChangeCompleted(index) {
