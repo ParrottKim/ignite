@@ -27,10 +27,10 @@ class _SignUpPageState extends State<SignUpPage> {
   FocusNode _passwordFocusNode;
   FocusNode _confirmFocusNode;
 
-  bool _isEditingUsername = false;
-  bool _isEditingEmail = false;
-  bool _isEditingPassword = false;
-  bool _isEditingConfirm = false;
+  bool _isUsernameEditing = false;
+  bool _isEmailEditing = false;
+  bool _isPasswordEditing = false;
+  bool _isConfirmEditing = false;
 
   bool _isUsernameExists = true;
   bool _isEmailExists = true;
@@ -227,7 +227,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         // prefix: Icon(icon),
                         border: InputBorder.none,
-                        errorText: _isEditingUsername
+                        errorText: _isUsernameEditing
                             ? _validateUsername(_usernameController.text)
                             : null,
                         errorStyle: TextStyle(
@@ -243,7 +243,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       onChanged: (value) async {
                         await _checkUsernameExists(value);
                         setState(() {
-                          _isEditingUsername = true;
+                          _isUsernameEditing = true;
                         });
                       },
                       onSubmitted: (value) {
@@ -270,7 +270,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         // prefix: Icon(icon),
                         border: InputBorder.none,
-                        errorText: _isEditingEmail
+                        errorText: _isEmailEditing
                             ? _validateEmail(_emailController.text)
                             : null,
                         errorStyle:
@@ -283,7 +283,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       onChanged: (value) async {
                         await _checkEmailExists(value);
                         setState(() {
-                          _isEditingEmail = true;
+                          _isEmailEditing = true;
                         });
                       },
                       onSubmitted: (value) {
@@ -310,7 +310,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           // prefix: Icon(icon),
                           border: InputBorder.none,
-                          errorText: _isEditingPassword
+                          errorText: _isPasswordEditing
                               ? _validatePassword(_passwordController.text)
                               : null,
                           errorStyle:
@@ -318,7 +318,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         onChanged: (value) {
                           setState(() {
-                            _isEditingPassword = true;
+                            _isPasswordEditing = true;
                           });
                         },
                         onSubmitted: (value) {
@@ -345,7 +345,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           // prefix: Icon(icon),
                           border: InputBorder.none,
-                          errorText: _isEditingConfirm
+                          errorText: _isConfirmEditing
                               ? _validateConfirm(_confirmController.text)
                               : null,
                           errorStyle:
@@ -353,7 +353,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         onChanged: (value) {
                           setState(() {
-                            _isEditingConfirm = true;
+                            _isConfirmEditing = true;
                           });
                         },
                         onSubmitted: (value) {

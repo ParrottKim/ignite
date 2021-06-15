@@ -221,7 +221,7 @@ class _SignInPageState extends State<SignInPage> {
                         elevation: 0,
                         minWidth: double.maxFinite,
                         height: 50,
-                        onPressed: () async {
+                        onPressed: () {
                           setState(() {
                             _emailFocusNode.unfocus();
                             _passwordFocusNode.unfocus();

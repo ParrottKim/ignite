@@ -44,7 +44,6 @@ class _SearchPageState extends State<SearchPage> {
             .collection("board")
             .doc(_boardId)
             .collection("content")
-            .orderBy("date", descending: true)
             .get()
             .then((element) {
           if (element.docs.isEmpty) {
@@ -60,18 +59,20 @@ class _SearchPageState extends State<SearchPage> {
                 child: Image.asset(
                     "assets/images/game_icons/lol_lanes/${doc.data()["lane"]}.png",
                     fit: BoxFit.contain));
-            fetchedList.add(Card(
-              child: InkWell(
-                child: ListTile(
-                  onTap: () {},
-                  minLeadingWidth: 10,
-                  leading: image,
-                  title: Text(doc.data()["title"],
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text('temperatory text'),
+            fetchedList.add(
+              Card(
+                child: InkWell(
+                  child: ListTile(
+                    onTap: () {},
+                    minLeadingWidth: 10,
+                    leading: image,
+                    title: Text(doc.data()["title"],
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text(doc.data()["content"]),
+                  ),
                 ),
               ),
-            ));
+            );
           });
         });
         break;
@@ -80,7 +81,6 @@ class _SearchPageState extends State<SearchPage> {
             .collection("board")
             .doc(_boardId)
             .collection("content")
-            .orderBy("date", descending: true)
             .get()
             .then((element) {
           if (element.docs.isEmpty) {
@@ -280,9 +280,19 @@ class _SearchPageState extends State<SearchPage> {
       floatingActionButton: _boardId != null
           ? FloatingActionButton(
               heroTag: null,
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                final result = await Navigator.push(
                     context, _createRoute(WritePostPage(snapshot: snapshot)));
+                changeRadioButtonIndex(result);
+                setState(() {
+                  _isLoading = true;
+                  _boardId = snapshot.data.docs[result].id;
+                });
+                _unloadItems();
+                await _loadItems();
+                setState(() {
+                  _isLoading = false;
+                });
               },
               child: Icon(Icons.add))
           : null,
@@ -304,16 +314,16 @@ class _SearchPageState extends State<SearchPage> {
       heroTag: null,
       onPressed: !_isLoading
           ? () async {
-              changeRadioButtonIndex(index);
-              setState(() {
-                _isLoading = true;
-                _boardId = snapshot.data.docs[index].id;
-              });
-              _unloadItems();
-              await _loadItems();
-              setState(() {
-                _isLoading = false;
-              });
+              // changeRadioButtonIndex(index);
+              // setState(() {
+              //   _isLoading = true;
+              //   _boardId = snapshot.data.docs[index].id;
+              // });
+              // _unloadItems();
+              // await _loadItems();
+              // setState(() {
+              //   _isLoading = false;
+              // });
             }
           : null,
       backgroundColor: _selectedIndex == index ? Colors.red : Colors.black26,

@@ -10,7 +10,7 @@ class LOLRepository {
     "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
     "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
     "Origin": "https://developer.riotgames.com",
-    "X-Riot-Token": "XXXX",
+    "X-Riot-Token": "RGAPI-9888951f-b4a0-4d6d-93be-872ac7f191aa",
   };
 
   Future getUserName(String username) async {

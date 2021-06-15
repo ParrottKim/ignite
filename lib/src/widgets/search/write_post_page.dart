@@ -29,6 +29,8 @@ class _WritePostPageState extends State<WritePostPage>
 
   int _selectedIndex = 0;
 
+  bool _isPreloaded = false;
+
   void changeRadioButtonIndex(int index) {
     setState(() {
       _selectedIndex = index;
@@ -84,6 +86,9 @@ class _WritePostPageState extends State<WritePostPage>
         print(accountName);
         break;
     }
+    setState(() {
+      _isPreloaded = true;
+    });
   }
 
   Future _preloadImages() async {
@@ -117,6 +122,7 @@ class _WritePostPageState extends State<WritePostPage>
         Provider.of<AuthenticationProvider>(context, listen: false);
     _lolProfileProvider =
         Provider.of<LOLProfileProvider>(context, listen: false);
+    if (!_isPreloaded) _refreshGameProfile();
   }
 
   @override
@@ -152,20 +158,7 @@ class _WritePostPageState extends State<WritePostPage>
                           },
                         ),
                       ),
-                      Divider(height: 1.0),
-                      FutureBuilder(
-                          future: _loadUserProfile(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData)
-                              return Container(
-                                  height: 80.0,
-                                  child: Center(
-                                      child: CircularProgressIndicator()));
-                            else
-                              return snapshot.data;
-                          }),
-                      Divider(height: 1.0),
-                      _loadBody(),
+                      _loadUserProfile(),
                     ],
                   )
                 : Container(
@@ -173,14 +166,6 @@ class _WritePostPageState extends State<WritePostPage>
                     height: MediaQuery.of(context).size.height,
                     child: Center(child: CircularProgressIndicator())),
           ),
-        ),
-        bottomNavigationBar: MaterialButton(
-          onPressed: () {},
-          color: Theme.of(context).accentColor,
-          height: 50,
-          child:
-              Text("등록", style: TextStyle(color: Colors.white, fontSize: 16)),
-          textColor: Colors.white,
         ),
       ),
     );
@@ -195,16 +180,15 @@ class _WritePostPageState extends State<WritePostPage>
     );
   }
 
-  Widget _loadBody() {
+  Widget _loadUserProfile() {
     switch (widget.snapshot.data.docs[_selectedIndex].id) {
       case "lol":
-        return LOLPostPage();
+        LOLUser lolUser = _lolProfileProvider.lolUser;
+        return LOLPostPage(lolUser: lolUser);
         break;
       default:
         return Container();
         break;
     }
   }
-
-  Future _loadUserProfile() async {}
 }
